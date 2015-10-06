@@ -110,7 +110,18 @@ TBitField TBitField :: operator| (const TBitField &bf) { // операция "и
 }
 
 TBitField TBitField :: operator& (const TBitField &bf) { // операция "и"
+    int i, len = BitLen;
 
+    if ( bf.BitLen > len )
+        len = bf.BitLen;
+
+    TBitField temp(len);
+    for ( i = 0; i < MemLen; i++ )
+        temp.pMem[i] = pMem[i];
+    for ( i = 0; i < bf.MemLen; i++ )
+        temp.pMem[i] &= bf.pMem[i];
+
+    return temp;
 
 
 
