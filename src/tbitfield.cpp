@@ -8,6 +8,7 @@
 TBitField :: TBitField(int len) : BitLen(len) {
     MemLen = ( len + 15 ) >> 4; // в эл-те pМем 16 бит (TELEM==int)
     pMem = new TELEM[MemLen];
+    BitLen = len;
 
     if ( pMem != NULL ){
         for ( int i = 0; i < MemLen; i++ )
@@ -168,7 +169,7 @@ ostream &operator<<(ostream &ostr, const TBitField &bf) { // вывод
     int i;
 
     for ( i = 0; i < bf.BitLen; i++)
-            ostr << bf.GetMemMask(i) << " ";
+            ostr << bf.GetBit(i) << " ";
     ostr << endl;
 
     return ostr;
