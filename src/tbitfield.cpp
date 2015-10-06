@@ -130,9 +130,11 @@ TBitField TBitField :: operator& (const TBitField &bf) { // операция "и
 }
 
 TBitField TBitField :: operator~ ( void ) { // отрицание
+    int i, len = BitLen;
+    TBitField temp(len);
 
-
-
+    for ( i = 0; i < MemLen; i++ )
+        temp.pMem[i] = ~pMem[i];
 
 }
 
@@ -165,10 +167,23 @@ istream &operator>>(istream &istr, TBitField &bf) {
  */
 
 ostream &operator<<(ostream &ostr, const TBitField &bf) { // вывод
+    int i;
 
+    for ( i = 0; i < bf.BitLen; i++)
+            ostr << bf.GetMemMask(i) << " ";
+    ostr << endl;
 
-
-
-
-
+    return ostr;
 }
+
+
+
+
+
+
+
+
+
+
+
+
