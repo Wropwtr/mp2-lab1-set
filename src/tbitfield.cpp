@@ -16,16 +16,18 @@ TBitField :: TBitField(int len) : BitLen(len) {
 }
 
 TBitField :: TBitField(const TBitField &bf) { // конструктор копирования
+    MemLen = bf.MemLen;
+    pMem = new TELEM[MemLen];
+    BitLen = bf.BitLen;
 
-
-
-
-
+    if ( pMem != NULL ){
+        for ( int i = 0; i < MemLen; i++ )
+            pMem[i] = bf.pMem[i];
+    }
 }
 
 TBitField :: ~TBitField() {
-
-
+    delete []pMem;
 }
 
 int TBitField :: GetMemIndex ( const int n ){ // индекс Мем для бита n
