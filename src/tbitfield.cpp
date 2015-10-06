@@ -68,14 +68,18 @@ int TBitField :: GetBit ( const int n ) const{ // получить значен�
 // битовые операции
 TBitField & TBitField :: operator=(const TBitField &bf) { // присваивание
 
+    delete[] pMem;
 
+    MemLen = bf.MemLen;
+    pMem = new TELEM[MemLen];
+    BitLen = bf.BitLen;
 
+    if ( pMem != NULL ){
+        for ( int i = 0; i < MemLen; i++ )
+            pMem[i] = bf.pMem[i];
+    }
 
-
-
-
-
-
+    return *this;
 }
 
 int TBitField :: operator==(const TBitField &bf) const{ // сравнение
@@ -122,11 +126,6 @@ TBitField TBitField :: operator& (const TBitField &bf) { // операция "и
         temp.pMem[i] &= bf.pMem[i];
 
     return temp;
-
-
-
-
-
 }
 
 TBitField TBitField :: operator~ ( void ) { // отрицание
@@ -135,7 +134,6 @@ TBitField TBitField :: operator~ ( void ) { // отрицание
 
     for ( i = 0; i < MemLen; i++ )
         temp.pMem[i] = ~pMem[i];
-
 }
 
 // ввод/вывод
@@ -175,15 +173,3 @@ ostream &operator<<(ostream &ostr, const TBitField &bf) { // вывод
 
     return ostr;
 }
-
-
-
-
-
-
-
-
-
-
-
-
