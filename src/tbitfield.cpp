@@ -30,36 +30,39 @@ TBitField :: ~TBitField() {
     delete []pMem;
 }
 
-int TBitField :: GetMemIndex ( const int n ){ // индекс Мем для бита n
- // преобразовать к int и разделить на 16
+int TBitField :: GetMemIndex ( const int n ) const{ // индекс Мем для бита n
     return n >> 4; // в эл-те pМем 16 бит
 }
+    // преобразовать к int и разделить на 16
 
-TELEM TBitField :: GetMemMask ( const int n ){ // битовая маска для бита
-
- // преобразовать к int, найти остаток от деления на 16 и сдвинуть
+TELEM TBitField :: GetMemMask ( const int n ) const{ // битовая маска для бита
     return 1 << (n & 15);
 }
+    // преобразовать к int, найти остаток от деления на 16 и сдвинуть
 
 // доступ к битам битового поля
-int TBitField :: GetLength(void) const { // получить длину (к-во битов)
+int TBitField :: GetLength(void) const{ // получить длину (к-во битов)
     return BitLen;
 }
 
-void TBitField :: SetBit ( const int n ) { // установить бит
-    if ( (n > -1) && (n < BitLen) )
+void TBitField :: SetBit ( const int n ){ // установить бит
+    if ( (n >= 0) && (n < BitLen) )
         pMem[GetMemIndex(n)] |= GetMemMask(n);
 }
 
-void TBitField :: ClrBit ( const int n ) { // очистить бит
-
+void TBitField :: ClrBit ( const int n ){ // очистить бит
+    if ( (n >= 0) && (n < BitLen) )
+        pMem[GetMemIndex(n)] &= ~GetMemMask(n);
 
 }
 
-int TBitField :: GetBit ( const int n ) const { // получить значение бита
+int TBitField :: GetBit ( const int n ) const{ // получить значение бита
+    if ( !((n >= 0) && (n < BitLen)) )
+        return 0;
+    if ( GetMemMask(n))
+        return 1;
 
-
-
+    return 0;
 }
 
 // битовые операции
@@ -75,7 +78,7 @@ TBitField & TBitField :: operator=(const TBitField &bf) { // присваива�
 
 }
 
-int TBitField :: operator==(const TBitField &bf) { // сравнение
+int TBitField :: operator==(const TBitField &bf) const{ // сравнение
     int res = 1;
 
     if ( BitLen != bf.BitLen ){
