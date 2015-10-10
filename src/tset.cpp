@@ -140,13 +140,18 @@ istream &operator>>(istream &istr, TSet &s) // ввод
 
 ostream& operator<<(ostream &ostr, const TSet &s) // вывод
 {
-	int i;
+	int i, k = 0;
 
 	for (i = 0; i < s.GetMaxPower(); i++){
-		if (s.IsMember(i))
+		if (s.IsMember(i)){
 			ostr << i << " ";
-		if ((i + 1) % 10 == 0)
+			k++;
+		}
+
+		if ((k + 1) % 10 == 0){
 			ostr << endl;
+			k = 0;
+		}
 	}
 	ostr << endl;
 
