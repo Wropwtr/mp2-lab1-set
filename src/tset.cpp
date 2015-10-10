@@ -7,19 +7,19 @@
 
 #include "tset.h"
 
-TSet::TSet(int mp) : BitField(mp)
+TSet::TSet(int mp) : BitField( mp )
 {
 	MaxPower = mp;
 }
 
 // конструктор копирования
-TSet::TSet(const TSet &s) : BitField(s.GetMaxPower())
+TSet::TSet(const TSet &s) : BitField( s.BitField )
 {
 	MaxPower = s.MaxPower;
 }
 
 // конструктор преобразования типа
-TSet::TSet(const TBitField &bf) : BitField(bf)
+TSet::TSet(const TBitField &bf) : BitField( bf )
 {
 	MaxPower = bf.GetLength();
 }
@@ -54,39 +54,36 @@ void TSet::DelElem(const int Elem) // исключение элемента мн
 
 TSet& TSet::operator=(const TSet &s) // присваивание
 {
+	MaxPower = s.GetMaxPower();
 	BitField = s.BitField;
 	return *this;
 }
 
 int TSet::operator==(const TSet &s) const // сравнение
 {
-	return (BitField == s.BitField);
+	return ( BitField == s.BitField );
 }
 
 int TSet::operator!=(const TSet &s) const // сравнение
 {
-	return (BitField != s.BitField);
+	return ( BitField != s.BitField );
 }
 
 TSet TSet::operator+(const TSet &s) // объединение
 {
-	TSet buf(BitField | s.BitField);
+	TSet buf( BitField | s.BitField );
+
 	return buf;
 }
 
 TSet TSet::operator+(const int Elem) // объединение с элементом
 {
-	if (Elem > BitField.GetLength()){
-		TSet buf(Elem);
-
-		buf.BitField = buf.BitField | BitField;
-		buf.InsElem(Elem);
-
-		return buf;
+	if ( Elem >= BitField.GetLength() ){
+		throw("Index of element out of range");
 	}
-	TSet buf( BitField.GetLength() );
-	buf.BitField = buf.BitField | BitField;
-	buf.InsElem(Elem);
+
+	TSet buf( BitField );
+	buf.InsElem( Elem );
 
 	return buf;
 }
@@ -100,17 +97,16 @@ TSet TSet::operator-(const int Elem) // разность с элементом
 }
 
 TSet TSet::operator*(const TSet &s) // пересечение
-{
-	
-	TSet buf( BitField.GetLength() );
-	buf.BitField = BitField & s.BitField;
-	return buf;
-	
+{	
+	TSet buf(BitField & s.BitField);
+
+	return buf;	
 }
 
 TSet TSet::operator~(void) // дополнение
 {
 	TSet buf(~BitField);
+
 	return buf;
 }
 // перегрузка ввода/вывода

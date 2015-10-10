@@ -65,6 +65,7 @@ void TBitField::ClrBit(const int n){ // очистить бит
 int TBitField::GetBit(const int n) const{ // получить значение бита
 	if (!((n >= 0) && (n < BitLen)))
 		throw(" Number must be > 0 and < BitLen");
+
 	if (pMem[GetMemIndex(n)] & GetMemMask(n))
 		return 1;
 
@@ -73,6 +74,9 @@ int TBitField::GetBit(const int n) const{ // получить значение �
 
 // битовые операции
 TBitField& TBitField :: operator=(const TBitField &bf) { // присваивание
+
+	if (*this == bf)
+		return *this;
 
 	delete[] pMem;
 
@@ -89,25 +93,21 @@ TBitField& TBitField :: operator=(const TBitField &bf) { // присваиван
 }
 
 int TBitField :: operator==(const TBitField &bf) const{ // сравнение
-	int res = 1;
 
-	if (BitLen != bf.BitLen){
-		res = 0;
-	}
-	else{
-		for (int i = 0; i < MemLen; i++)
-		if (pMem[i] != bf.pMem[i]){
-			res = 0;
-			break;
+	if (BitLen != bf.BitLen)
+		return 0;
+	
+	for (int i = 0; i < BitLen; i++)
+		if (  GetBit(i) != bf.GetBit(i) ){
+			return 0;
 		}
-	}
-	return res;
+
+	return 1;
 }
 
 int TBitField :: operator!=(const TBitField &bf) const{ // сравнение
 
 	return !(*this == bf);
-
 }
 
 TBitField TBitField :: operator| (const TBitField &bf) { // операция "или"
